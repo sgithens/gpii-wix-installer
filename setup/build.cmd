@@ -1,5 +1,8 @@
 path %path%;C:\Users\nminogiannis\Apps\MinGW\bin;C:\Users\nminogiannis\Apps\Wix;C:\Program Files (x86)\MSBuild\12.0\Bin
 
+path %path%;C:\Program Files (x86)\MSBuild\12.0\Bin;C:\Program Files (x86)\WiX Toolset v3.8\bin
+
+
 pushd ..\dist\windows
 	call clean.cmd
 	

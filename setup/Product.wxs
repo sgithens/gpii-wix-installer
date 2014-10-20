@@ -88,8 +88,42 @@
                   ExeCommand="[SystemFolder]\cmd /c &quot;cd /d &quot;&quot;[INSTALLFOLDER]\node_modules\universal&quot;&quot; &amp;&amp; npm install &quot;"
                   />
 
+    <!-- Custom Action to install service using nssm.exe -->
+    <CustomAction Id="NssmInstall"
+                  Directory="INSTALLFOLDER"
+                  Execute="commit"
+                  Impersonate="no"
+                  Return="ignore"
+                  ExeCommand="[INSTALLFOLDER]\nssm.exe install localgpii &quot;[INSTALLFOLDER]node.exe&quot; gpii.js"
+                  />
+    <CustomAction Id="NssmSetAppDirectory"
+                  Directory="INSTALLFOLDER"
+                  Execute="commit"
+                  Impersonate="no"
+                  Return="ignore"
+                  ExeCommand="[INSTALLFOLDER]\nssm.exe set localgpii AppDirectory &quot;[INSTALLFOLDER]windows&quot;"
+                  />
+    <CustomAction Id="NssmStartGPII"
+                  Directory="INSTALLFOLDER"
+                  Execute="commit"
+                  Impersonate="no"
+                  Return="ignore"
+                  ExeCommand="[INSTALLFOLDER]\nssm.exe start localgpii"
+                  />
+    <CustomAction Id="NssmUninstall"
+                  Directory="INSTALLFOLDER"
+                  Execute="commit"
+                  Impersonate="no"
+                  Return="ignore"
+                  ExeCommand="[INSTALLFOLDER]\nssm.exe remove localgpii confirm"
+                  />
+
     <InstallExecuteSequence>
-      <Custom Action="NpmInstall" After="InstallFiles">NOT Installed</Custom>
+      <!-- <Custom Action="NpmInstall" After="InstallFiles">NOT Installed</Custom> -->
+      <Custom Action="NssmInstall" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="NssmSetAppDirectory" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="NssmStartGPII" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="NssmUninstall" Before="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
     </InstallExecuteSequence>
 
   </Product>
